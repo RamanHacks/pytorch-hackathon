@@ -7,7 +7,7 @@ For the OCR part, we have deployed a `torchserve` model server on `GCP` using `V
 
 For the NER part, we created a training module using `transformers` library which requires the text and bounding-box results from OCR output to train/predict documents.
 
-The architectural flow of the two modules is shown here:
+The architectural flow of the two modules is shown ![here](https://media.discordapp.net/attachments/900413429381210155/905519648815067196/Result.jpg?width=810&height=678)
 
 # File Structure
 
@@ -121,4 +121,4 @@ docker rm $(docker ps -l -q)
 
 # NER Part
 
-Jump to [NER.ipynb]() for details on training and testing Document NER models!
+Jump to [NER.ipynb](https://github.com/RamanHacks/pytorch-hackathon/blob/main/NER/NER.ipynb) for details on training and testing Document NER models!
