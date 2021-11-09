@@ -211,28 +211,28 @@ For testing API, follow [these](#sample-request) steps!
 
 ## Sample Request  
 > Request format: Create a sample `json` file containing base64 values of image
-```
+```js
 {
     'b64': '<base64 value of an image>' 
 }
 ```
 
 > Response format of OCR(only), i.e. when hitting "/wfpredict/ocr": 
-```
+```js
 [
     {
-        'bbox': [[<top-left>],[<top-right>],[<bottom-left>],[<bottom-right>]]
-        'ocr': [<value>, <confidence>]
+        'bbox': [[<top-left>],[<top-right>],[<bottom-left>],[<bottom-right>]],
+        'ocr': [<value>, <confidence>],
     }
 ]
 ```
 > Response format of OCR+NER, i.e. when hitting "/wfpredict/ner_sroie" or "/wfpredict/ner_funsd":
-```
+```js
 [
     {
-        'bbox': [<top-left-x>,<top-left-y>,<bottom-right-x>,<bottom-right-y>]
-        'ocr': <value>
-        'key': <value>
+        'bbox': [<top-left-x>,<top-left-y>,<bottom-right-x>,<bottom-right-y>],
+        'ocr': <value>,
+        'key': <value>,
     }
 ]
 ```
@@ -247,7 +247,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8" -d @sample_b64.j
 ### From Python file
 
 > Python function to convert an image into base64, send request and return predictions  
-```
+```python
 import base64
 import requests
 def sample_request(image_file_path)
