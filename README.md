@@ -106,9 +106,12 @@ train                            # NOTEBOOKS for training models on GPU/CPU. Mor
 ## Deployment 
 
 ### Quick Deploy  
-> Install docker and nvidia container toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!
-> Download and start docker: ```docker run -d --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 abhigyanr/det-gpu:latest```
-In order to send sample request to it, go [here](#sample-request)
+> Install docker and nvidia container toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!  
+
+> Download and start docker:  
+```docker run -d --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 abhigyanr/det-gpu:latest```  
+
+In order to send sample request to it, go [here](#sample-request)  
 Note: This requires NVIDIA GPU and driver to be present!
 
 ### Using Docker Containers  
