@@ -74,9 +74,12 @@ deploy                           # INSTRUCTIONS/SCRIPTS for deploying model(s) o
 |------workflow_ocr.yaml         # define the pipeline here, also specify batch-size, num workers etc.
 |------workflow_ner_sroie.yaml
 |------workflow_ner_funsd.yaml
-|------Dockerfile                # Dockerfile template for creating CPU image for UCR
-|------cloud_deploy.ipynb        # Scripts to deploy the file on GCP Vertex ai and run predictions.
-|------sample_b64.json           # Sample file to send request on inference api
+|------Dockerfile                # template for creating GPU docker image for UCR
+|------.dockerignore             # files to ignore in docker image
+|------cloud_deploy.ipynb        # scripts to deploy the file on GCP Vertex ai and run predictions.
+|------sample_b64.json           # sample file to send request on inference api
+|------index_sroie.json          # contains mapping of indexes to human-readable labels for SROIE dataset  
+|------index_funsd.json          # contains mapping of indexes to human-readable labels for FUNSD dataset
 
 |---CPU                          # Same as above except it's CPU (currently INCOMPLETE)
 |------jit-models
@@ -131,8 +134,8 @@ docker build -f Dockerfile -t det .
 ```
 > Run Docker container
 ```
-docker run -d --name det-cpu -p 7080:7080 -p 7081:7081 -p 7082:7082 det                # (For CPU)
-docker run -d --name det-gpu --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 det     # (For GPU, use --gpus '"device=0,1"' to specify device)
+docker run -d --rm --name det-cpu -p 7080:7080 -p 7081:7081 -p 7082:7082 det                # (For CPU)
+docker run -d --rm --name det-gpu --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 det     # (For GPU, use --gpus '"device=0,1"' to specify device)
 ```
 > Optional: Check Status
 ```
@@ -157,7 +160,6 @@ For testing API, follow [these](#sample-request) steps!
 
 > Install torch from official link: [PyTorch Official](https://pytorch.org/get-started/locally/)   
 > Install torchserve from official repo: [TorchServe Official](https://github.com/pytorch/serve.git)  
-> Download pretrained torchscript models from [Google Drive](https://drive.google.com/drive/folders/1NBSZIZzSzIVOUqnxu0PHgmy-_Tvvp2hY?usp=sharing)  
 
 > Clone this repository and install dependencies:
 ```
@@ -166,6 +168,7 @@ cd pytorch-hackathon && cd deploy
 pip install -r requirements.txt    
 cd GPU      # OR (cd CPU)
 ```  
+> Download pretrained torchscript models from [Google Drive](https://drive.google.com/drive/folders/1NBSZIZzSzIVOUqnxu0PHgmy-_Tvvp2hY?usp=sharing) and move it inside jit-models folder.
 
 > Generate .mar files:
 ```
@@ -174,13 +177,17 @@ torch-model-archiver -f --model-name craft --version 1.0 --serialized-file jit-m
 
 torch-model-archiver -f --model-name crnn --version 1.0 --serialized-file jit-models/crnn_ts.pt --handler rec_handler.py --export-path model-archive/model_store/
 
-torch-model-archiver -f --model-name sroie --version 1.0 --serialized-file jit-models/sroie_ts.pt --handler ext_handler.py --export-path model-archive/model_store/
+cp index_sroie.json index.json
+torch-model-archiver -f --model-name sroie --version 1.0 --serialized-file jit-models/sroie_ts.pt --handler ext_handler.py --export-path model-archive/model_store/ --extra-files index.json
 
-torch-model-archiver -f --model-name funsd --version 1.0 --serialized-file jit-models/funsd_ts.pt --handler ext_handler.py --export-path model-archive/model_store/
+cp index_funsd.json index.json
+torch-model-archiver -f --model-name funsd --version 1.0 --serialized-file jit-models/funsd_ts.pt --handler ext_handler.py --export-path model-archive/model_store/ --extra-files index.json
+
+rm index.json
 ```
 ```
 # create workflow archives
-torch-workflow-archiver -f --workflow-name ocr --spec-file workflow.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
+torch-workflow-archiver -f --workflow-name ocr --spec-file workflow_ocr.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
 
 torch-workflow-archiver -f --workflow-name ner_sroie --spec-file workflow_ner_sroie.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
 
@@ -206,7 +213,7 @@ For testing API, follow [these](#sample-request) steps!
 > Request format: Create a sample `json` file containing base64 values of image
 ```
 {
-    'data': '<base64 value of an image>' 
+    'b64': '<base64 value of an image>' 
 }
 ```
 

@@ -159,7 +159,7 @@ class RecHandler(BaseHandler):
                 image = Image.open(io.BytesIO(image)).convert('RGB')
                 img_shape = image.size
                 img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-                bbox = list((eval(row.get("detection").decode())).values())[0]
+                bbox = eval(row.get("detection").decode())
                 bbox = np.array(bbox).astype('float32')
                 for bno in range(len(bbox)):
                     img_crop = self.get_rotate_crop_image(img, bbox[bno])

@@ -12,6 +12,6 @@ def pre_processing(data, context):
         return data
     b64_data = []
     for row in data:
-        input_data = (row.get("data") or row.get("body") or row)["instances"][0]
-        b64_data.append(input_data['data']['b64'])
+        input_data = (row.get("data") or row.get("body") or row)
+        b64_data.append(input_data['b64'])
     return b64_data
