@@ -34,7 +34,7 @@ The architectural flow of the two modules is shown ![here](https://media.discord
   - [Live Demo](#live-demo)
   - [Deployment](#deployment)
     - [Quick Deploy](#quick-deploy)
-    - [Using Docker Containers](#using-docker-containers)
+    - [Using Docker Container](#using-docker-containers)
     - [From Source](#from-source)
   - [Sample Request](#sample-request)
     - [Using CURL](#using-curl)
@@ -115,7 +115,7 @@ train                            # NOTEBOOKS for training models on GPU/CPU. Mor
 For testing API, follow [these](#sample-request) steps! 
 *Note: This method requires NVIDIA GPU and driver to be present!*
 
-### Using Docker Containers  
+### Using Docker Container  
 > Install docker and nvidia container toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!
 
 > Clone this repository and change directory:
@@ -155,15 +155,15 @@ For testing API, follow [these](#sample-request) steps!
 
 ### From Source  
 
-> Install torch from official link: [PyTorch Official](https://pytorch.org/get-started/locally/)
-> Install torchserve from official repo: [TorchServe Official](https://github.com/pytorch/serve.git)
-> Install python dependencies:  ```pip install -r requirements.txt```
+> Install torch from official link: [PyTorch Official](https://pytorch.org/get-started/locally/)   
+> Install torchserve from official repo: [TorchServe Official](https://github.com/pytorch/serve.git)  
 > Download pretrained torchscript models from [Google Drive](https://drive.google.com/drive/folders/1NBSZIZzSzIVOUqnxu0PHgmy-_Tvvp2hY?usp=sharing)  
 
-> Clone this repository and change directory:
+> Clone this repository and install dependencies:
 ```
 git clone https://github.com/RamanHacks/pytorch-hackathon.git
 cd pytorch-hackathon && cd deploy
+pip install -r requirements.txt    
 cd GPU      # OR (cd CPU)
 ```  
 
