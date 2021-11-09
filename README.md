@@ -112,7 +112,7 @@ train                            # NOTEBOOKS for training models on GPU/CPU. Mor
 > Download and start docker:  
 ```docker run -d --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 abhigyanr/det-gpu:latest```  
 
-For testing the server, go [here](#sample-request)!  
+For testing API, follow [these](#sample-request) steps! 
 *Note: This method requires NVIDIA GPU and driver to be present!*
 
 ### Using Docker Containers  
@@ -145,30 +145,45 @@ curl localhost:7080/ping            # to check if the network is accessible from
 curl -X POST "localhost:7081/workflows?url=ocr.war"
 curl -X POST "localhost:7081/workflows?url=ner_sroie.war"
 curl -X POST "localhost:7081/workflows?url=ner_funsd.war"
-
+``` 
 > Optional: Stop and Remove Container
 ```
 docker stop $(docker ps -l -q)
 docker rm $(docker ps -l -q)
 ```
-For testing the server, go [here](#sample-request)
+For testing API, follow [these](#sample-request) steps! 
 
 ### From Source  
 
 > Install torch from official link: [PyTorch Official](https://pytorch.org/get-started/locally/)
 > Install torchserve from official repo: [TorchServe Official](https://github.com/pytorch/serve.git)
 > Install python dependencies:  ```pip install -r requirements.txt```
-> Download pretrained torchscript models from [Google Drive](https://drive.google.com/drive/folders/1NBSZIZzSzIVOUqnxu0PHgmy-_Tvvp2hY?usp=sharing)
+> Download pretrained torchscript models from [Google Drive](https://drive.google.com/drive/folders/1NBSZIZzSzIVOUqnxu0PHgmy-_Tvvp2hY?usp=sharing)  
+
+> Clone this repository and change directory:
+```
+git clone https://github.com/RamanHacks/pytorch-hackathon.git
+cd pytorch-hackathon && cd deploy
+cd GPU      # OR (cd CPU)
+```  
 
 > Generate .mar files:
 ```
-cd deploy/GPU       #(cd deploy/CPU)
+# create model archives
 torch-model-archiver -f --model-name craft --version 1.0 --serialized-file jit-models/craft_ts.pt --handler det_handler.py --export-path model-archive/model_store/
+
 torch-model-archiver -f --model-name crnn --version 1.0 --serialized-file jit-models/crnn_ts.pt --handler rec_handler.py --export-path model-archive/model_store/
+
 torch-model-archiver -f --model-name sroie --version 1.0 --serialized-file jit-models/sroie_ts.pt --handler ext_handler.py --export-path model-archive/model_store/
+
 torch-model-archiver -f --model-name funsd --version 1.0 --serialized-file jit-models/funsd_ts.pt --handler ext_handler.py --export-path model-archive/model_store/
+```
+```
+# create workflow archives
 torch-workflow-archiver -f --workflow-name ocr --spec-file workflow.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
+
 torch-workflow-archiver -f --workflow-name ner_sroie --spec-file workflow_ner_sroie.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
+
 torch-workflow-archiver -f --workflow-name ner_funsd --spec-file workflow_ner_funsd.yaml --handler workflow_handler.py --export-path model-archive/wf_store/
 ```
 > Start Model Server
@@ -181,14 +196,14 @@ curl -X POST "localhost:7081/workflows?url=ocr.war"
 curl -X POST "localhost:7081/workflows?url=ner_sroie.war"
 curl -X POST "localhost:7081/workflows?url=ner_funsd.war"
 ```
-> Stop TorchServe
+> Optional: Stop TorchServe
 ```
 torchserve --stop
 ```
-In order to send sample request to it, go [here](#sample-request)
+For testing API, follow [these](#sample-request) steps! 
 
 ## Sample Request  
-> Request format: json file containing base64 values of image
+> Request format: Create a sample `json` file containing base64 values of image
 ```
 {
     'data': '<base64 value of an image>' 
