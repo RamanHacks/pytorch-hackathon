@@ -2,7 +2,7 @@
 
 DET is an end-to-end tool for extracting **Key-Value** pairs from a variety of documents, built entirely on [PyTorch](https://pytorch.org/) and served using [TorchServe](https://pytorch.org/serve/).
 
-**Try it live on the [web-app](https://pytorch-hackathon-4819e.web.app/).** :wave:
+**Try it live on the [web-app](https://pytorch-hackathon-4819e.web.app/)!** :wave:
 
 ## DET Architecture
 
@@ -100,8 +100,9 @@ train                            # NOTEBOOKS for training models on GPU/CPU. Mor
 |---NER.ipynb                    # Jupyter Notebook to train,test Document NER models and convert it to torchscript format.
 ```
 
-## Live Demo
-
+## Live Demo  
+#### **Try it live [here](https://pytorch-hackathon-4819e.web.app/)!** :wave: 
+<p align="center"><img src="deploy/demo.gif"/></p>
 
 ## Deployment 
 
