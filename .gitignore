@@ -2,3 +2,5 @@
 logs
 *.mar
 *.war
+*.bin
+config.json
