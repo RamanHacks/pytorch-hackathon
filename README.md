@@ -2,7 +2,7 @@
 
 DET is an end-to-end tool for extracting **Key-Value** pairs from a variety of documents, built entirely on [PyTorch](https://pytorch.org/) and served using [TorchServe](https://pytorch.org/serve/).
 
-**Try it live here, [web-app]([docs/README.md](https://pytorch-hackathon-4819e.web.app/)).** :wave:
+**Try it live on the [web-app](https://pytorch-hackathon-4819e.web.app/).** :wave:
 
 ## DET Architecture
 
@@ -106,13 +106,13 @@ train                            # NOTEBOOKS for training models on GPU/CPU. Mor
 ## Deployment 
 
 ### Quick Deploy  
-> Install docker and nvidia container toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!  
+> Install Docker and NVIDIA Container Toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!  
 
 > Download and start docker:  
 ```docker run -d --gpus all -p 7080:7080 -p 7081:7081 -p 7082:7082 abhigyanr/det-gpu:latest```  
 
-In order to send sample request to it, go [here](#sample-request)  
-Note: This requires NVIDIA GPU and driver to be present!
+For testing the server, go [here](#sample-request)!  
+*Note: This method requires NVIDIA GPU and driver to be present!*
 
 ### Using Docker Containers  
 > Install docker and nvidia container toolkit: See this [link](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) for help!
@@ -144,17 +144,13 @@ curl localhost:7080/ping            # to check if the network is accessible from
 curl -X POST "localhost:7081/workflows?url=ocr.war"
 curl -X POST "localhost:7081/workflows?url=ner_sroie.war"
 curl -X POST "localhost:7081/workflows?url=ner_funsd.war"
-```
-(Optional: test_run)
-```
-curl -X POST -H "Content-Type: application/json; charset=utf-8" -d @sample_b64.json localhost:7080/wfpredict/ocr -o output_test.json
-```
+
 > Optional: Stop and Remove Container
 ```
 docker stop $(docker ps -l -q)
 docker rm $(docker ps -l -q)
 ```
-In order to send sample request to it, go [here](#sample-request)
+For testing the server, go [here](#sample-request)
 
 ### From Source  
 
@@ -227,12 +223,11 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8" -d @sample_b64.j
 
 ### From Python file
 
-> Python function to convert an image into base64, send request and return predictions
+> Python function to convert an image into base64, send request and return predictions  
 ```
+import base64
+import requests
 def sample_request(image_file_path)
-    import base64
-    import requests
-
     def convert_b64(image_file):
         """Open image and convert it to Base64"""
         with open(image_file, "rb") as input_file:
@@ -255,7 +250,7 @@ Jump to [NER.ipynb](https://github.com/RamanHacks/pytorch-hackathon/blob/main/NE
 ## Model Optimization
 -----Coming Soon----- 
 ## Support Our Work
------If you like our work, do not forget to :star: this repository and follow us on [twitter](twitter), [linkedin](linkedin)-----
+-----If you like our work, do not forget to :star: this repository and follow us on [twitter](twitter), [linkedin](linkedin)-----  
 -----If you have got any specific feature request, contact us at admin@docyard.ai----- 
 ## License
 [Apache License 2.0](LICENSE)
