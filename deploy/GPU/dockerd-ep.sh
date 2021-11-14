@@ -18,7 +18,7 @@ if [[ "$1" = "serve" ]]; then
     torchserve --start --model-store model-archive/model_store/ --workflow-store model-archive/wf_store/ --ncs --ts-config config.properties
     sleep 2s
     curl -X POST "localhost:7081/workflows?url=ner_funsd.war"
-    curl -X POST "localhost:7081/workflows?url=ner_sroie.war"
+    # curl -X POST "localhost:7081/workflows?url=ner_sroie.war"
 else
     eval "$@"
 fi

@@ -1,0 +1,23 @@
+models:
+    min-workers: 1
+    max-workers: 1
+    batch-size: 1
+    max-batch-delay: 1000
+    retry-attempts: 1
+    timeout-ms: 300000
+
+    detection:
+      url: craft.mar
+
+    recognition:
+      url: crnn.mar
+      batch-size: 16
+
+    extraction:
+      url: funsd.mar
+      batch-size: 2
+
+dag:
+  pre_processing: [detection, recognition, extraction]
+  detection: [recognition] 
+  recognition: [extraction]
